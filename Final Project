@@ -1,0 +1,975 @@
+#Feistel Network (CH4 p 128)
+
+#initalizing variables
+k=0
+
+#Creating the sentence
+Sentence = "WEAPONS FROM MATH"
+def remove(string):
+  return string.replace(" ", "")
+sentence= remove(Sentence)
+
+#Sitting it into groups of three
+Group1L = ""
+Group2L = ""
+Group3L = ""
+Group1R = ""
+Group2R = ""
+Group3R = "ZZZ"
+for i in range (0, len(sentence)):
+  if i <3:
+    Group1L+= sentence[i];
+  if i>=3 and i<6:
+    Group1R += sentence[i];
+  if i>=6 and i<9:
+    Group2L += sentence[i];
+  if i>=9 and i<12:
+    Group2R += sentence[i];
+  if i>=12 and i<15:
+    Group3L += sentence[i];
+print("Feistel Network")
+
+def Part1a(GroupL, GroupR):
+    #Spit group into indiviual
+    L1 = Group1L[0]
+    L2 = Group1L[1]
+    L3 = Group1L[2]
+    R1 = Group1R[0]
+    R2 = Group1R[1]
+    R3 = Group1R[2]
+    #Convert to decimal 
+    l1 = ord(L1) - 64
+    l2 = ord(L2) - 64
+    l3 = ord(L3) - 64
+    r1 = ord(R1) - 64
+    r2 = ord(R2) - 64
+    r3 = ord(R3) - 64
+    
+    #testing
+    #print(L1, L2, L3, R1, R2, R3)
+    #print(l1, l2, l3, r1, r2, r3)
+    
+    #Five Rounds 
+    #for j in range (0,5):
+    #Part1b(l1, l2, l3, r1, r2, r3)
+    
+    #return
+    return (l1, l2, l3, r1, r2, r3)
+
+def Part1b(l1, l2, l3, r1, r2, r3):
+    #key
+    global k
+    k+=1
+    #print(k)
+    
+    #function
+    a = (7 * r1 ) % 26
+    b = (7 * r2 ) % 26
+    c = (7 * r3 ) % 26
+    
+    #XOR
+    r1 = a ^ l1
+    r2 = b ^ l2
+    r3 = c ^ l3
+    
+    #SetNewValue 
+    l3 = a
+    l1 = b
+    l2 = c
+    
+    #testing
+    #print(a, b, c)
+    #print(l1, l2, l3, r1, r2, r3)
+    
+    #return 
+    return(l1, l2, l3, r1,  r2, r3)
+    
+def Part1(Gropu1L, Group1R):
+  l1, l2, l3, r1, r2, r3 = Part1a(Group1L, Group1R)
+  Part1b(l1, l2, l3, r1, r2, r3)
+  for i in range(0, 5):
+   l1, l2, l3, r1, r2, r3 = Part1b(l1, l2, l3, r1, r2, r3)
+  return (l1, l2, l3, r1, r2, r3)
+l1, l2, l3, r1, r2, r3 = Part1(Group1L, Group1R)
+
+k=0
+def Part2a(GroupL, GroupR):
+    #Spit group into indiviual
+    L4 = Group2L[0]
+    L5 = Group2L[1]
+    L6 = Group2L[2]
+    R4 = Group2R[0]
+    R5 = Group2R[1]
+    R6 = Group2R[2]
+    #Convert to decimal 
+    l4 = ord(L4) - 64
+    l5 = ord(L5) - 64
+    l6 = ord(L6) - 64
+    r4 = ord(R4) - 64
+    r5 = ord(R5) - 64
+    r6 = ord(R6) - 64
+    
+    #testing
+    #print(L4, L5, L6, R4, R5, R6)
+    #print(l4, l5, l6, r4, r5, r6)
+    
+    #Five Rounds 
+    #for j in range (0,5):
+      #Part1b(l4, l5, l6, r4, r5, r6)
+    
+    #return
+    return (l4, l5, l6, r4, r5, r6)
+    
+def Part2b(l4, l5, l6, r4, r5, r6):
+    #key
+    global k
+    k+=1
+    #print(k)
+    
+    #function
+    a4 = (7 * r4 ) % 26
+    b5 = (7 * r5 ) % 26
+    c6 = (7 * r6 ) % 26
+    
+    #XOR
+    r4 = a4 ^ l4
+    r5 = b5 ^ l5
+    r6 = c6 ^ l6
+    
+    #SetNewValue 
+    l6 = a4
+    l5 = b5
+    l4 = c6
+    
+    #testing
+    #print(a4, b5, c6)
+    #print(l4, l5, l6, r4, r5, r6)
+    
+    #return 
+    return(l4, l5, l6, r4, r5, r6)
+    
+def Part2(Gropu2L, Group2R):
+  l4, l5, l6, r4, r5, r6 = Part2a(Group2L, Group2R)
+  Part2b(l4, l5, l6, r4, r5, r6)
+  for i in range(0, 5):
+   l4, l5, l6, r4, r5, r6 = Part2b(l4, l5, l6, r4, r5, r6)
+  return (l4, l5, l6, r4, r5, r6)
+
+l4, l5, l6, r4, r5, r6 = Part2(Group2L, Group2R) 
+k=0
+
+def Part3a(Group3L, Group3R):
+    #Spit group into indiviual
+    L7 = Group3L[0]
+    L8 = Group3L[1]
+    L9 = Group3L[2]
+    R7 = Group3R[0]
+    R8 = Group3R[1]
+    R9 = Group3R[2]
+    #Convert to decimal 
+    l7 = ord(L7) - 64
+    l8 = ord(L8) - 64
+    l9 = ord(L9) - 64
+    r7 = ord(R7) - 64
+    r8 = ord(R8) - 64
+    r9 = ord(R9) - 64
+    
+    #testing
+    #print(L7, L8, L9, R7, R8, R9)
+    #print(l7, l8, l9, r7, r8, r9)
+    
+    #Five Rounds 
+    #for j in range (0,5):
+      #Part1b(l7, l8, l9, r7, r8, r9)
+    
+    #return
+    return (l7, l8, l9, r7, r8, r9)
+
+def Part3b(l7, l8, l9, r7, r8, r9):
+    #key
+    global k
+    k+=1
+    #print(k)
+    
+    #function
+    a7 = (7 * r7 ) % 26
+    b8 = (7 * r8 ) % 26
+    c9 = (7 * r9 ) % 26
+    
+    #XOR
+    r7 = a7 ^ l7
+    r8 = b8 ^ l8
+    r9 = c9 ^ l9
+    
+    #SetNewValue 
+    l9 = a7
+    l8 = b8
+    l7 = c9
+    
+    #testing
+    #print(a7, b8, c9)
+    #print(l7, l8, l9, r7, r8, r9)
+    
+    #return
+    return(l7, l8, l9, r7, r8, r9)
+
+def Part3(Group3L, Group3R):
+  l7, l8, l9, r7, r8, r9 = Part3a(Group3L, Group3R)
+  Part3b(l7, l8, l9, r7, r8, r9)
+  for i in range(0, 5):
+   l7, l8, l9, r7, r8, r9 = Part3b(l7, l8, l9, r7, r8, r9)
+  return (l7, l8, l9, r7, r8, r9)
+
+l7, l8, l9, r7, r8, r9 = Part3(Group3L, Group3R)  
+k=0
+
+#Encryption Answer
+l1, l2, l3, r1, r2, r3 = l1 + 64, l2 + 64, l3 + 64, r1 + 64, r2 + 64, r3 + 64
+l1, l2, l3, r1, r2, r3 = chr(int(l1)), chr(int(l2)), chr(int(l3)), chr(int(r1)), chr(int(r2)), chr(int(r3))
+l4, l5, l6, r4, r5, r6 = l4 + 64, l5 + 64, l6 + 64, r4 + 64, r5 + 64, r6 + 64
+l4, l5, l6, r4, r5, r6 = chr(int(l4)), chr(int(l5)), chr(int(l6)), chr(int(r4)), chr(int(r5)), chr(int(r6))
+l7, l8, l9, r7, r8, r9 = l7 + 64, l8 + 64, l9 + 64, r7 + 64, r8 + 64, r9 + 64
+l7, l8, l9, r7, r8, r9 = chr(int(l7)), chr(int(l8)), chr(int(l9)), chr(int(r7)), chr(int(r8)), chr(int(r9))
+Feistel_Network1 = str(l1) + str(l2) + str(l3) + str(r1) + str(r2) + str(r3) + str(l4) + str(l5) + str(l6) + str(r4) + str(r5) + str(r6) + str(l7) + str(l8) + str(l9) + str(r7) + str(r8) + str(r9)
+print("Encryption: " + Feistel_Network1)
+  
+
+#Decryption
+L1, L2, L3, R1, R2, R3 = ord(l1) - 64, ord(l2) - 64, ord(l3) - 64, ord(r1) - 64, ord(r2) - 64, ord(r3) - 64
+L4, L5, L6, R4, R5, R6 = ord(l4) - 64, ord(l5) - 64, ord(l6) - 64, ord(r4) - 64, ord(r5) - 64, ord(r6) - 64
+L7, L8, L9, R7, R8, R9 = ord(l7) - 64, ord(l8) - 64, ord(l9) - 64, ord(r7) - 64, ord(r8) - 64, ord(r9) - 64
+
+for i in range (0,5):
+  L1, L2, L3, R1, R2, R3 = Part1b(L1, L2, L3, R1, R2, R3)
+  L4, L5, L6, R4, R5, R6 = Part2b(L4, L5, L6, R4, R5, R6)
+  L7, L8, L9, R7, R8, R9 = Part3b(L7, L8, L9, R7, R8, R9)
+
+L1, L2, L3, R1, R2, R3 = L1 + 64, L2 + 64, L3 + 64, R1 + 64, R2 + 64, R3 + 64
+L1, L2, L3, R1, R2, R3 = chr(int(L1)), chr(int(L2)), chr(int(L3)), chr(int(R1)), chr(int(R2)), chr(int(R3))
+L4, L5, L6, R4, R5, R6 = L4 + 64, L5 + 64, L6 + 64, R4 + 64, R5 + 64, R6 + 64
+L4, L5, L6, R4, R5, R6 = chr(int(L4)), chr(int(L5)), chr(int(L6)), chr(int(R4)), chr(int(R5)), chr(int(R6))
+L7, L8, L9, R7, R8, R9 = L7 + 64, L8 + 64, L9 + 64, R7 + 64, R8 + 64, R9 + 64
+L7, L8, L9, R7, R8, R9 = chr(int(L7)), chr(int(L8)), chr(int(L9)), chr(int(R7)), chr(int(R8)), chr(int(R9))
+Feistel_Network2 = str(L1) + str(L2) + str(L3) + str(R1) + str(R2) + str(R3) + str(L4) + str(L5) + str(L6) + str(R4) + str(R5) + str(R6) + str(L7) + str(L8) + str(L9) + str(R7) + str(R8) + str(R9)
+#print("Decryption: " + Feistel_Network2)
+
+#Block Stream Cipher (CH4 and CH5)
+  #Pick 3 fixed letters as the key (PIE)
+  #Pick 3 letters as teh initialization vector (ABC)
+  #only encrypt ECB, CBC, OFB
+  #3 block % 26
+  #input P and K
+  #7 * P + K % 26
+  #rotate by one letter (INK -> KIN)
+key = "PIE"
+vector = "ABC"
+
+#Electronic Codebook
+def Key1(E1, E4, E7, E10, E13):
+  C1 = (7 * E1 + 1) % 26
+  C4 = (7 * E4 + 1) % 26
+  C7 = (7 * E7 + 1) % 26
+  C10 = (7 * E10 + 1) % 26
+  C13 = (7 * E13 + 1) % 26
+  return (C1, C4, C7, C10, C13)
+def Key2(E2, E5, E8, E11, E14):
+  C2 = (7 * E2 + 1) % 26
+  C5 = (7 * E5 + 1) % 26
+  C8 = (7 * E8 + 1) % 26
+  C11 = (7 * E11 + 1) % 26
+  C14 = (7 * E14 + 1) % 26
+  return (C2, C5, C8, C11, C14)
+def Key3(E3, E6, E9, E12, E15):
+  C3 = (7 * E3 + 1) % 26
+  C6 = (7 * E6 + 1) % 26
+  C9 = (7 * E9 + 1) % 26
+  C12 = (7 * E12 + 1) % 26
+  C15 = (7 * E15 + 1) % 26
+  return (C3, C6, C9, C12, C15)
+  
+l1, l2, l3, r1, r2, r3 = Part1a(Group1L, Group1R)
+(l4, l5, l6, r4, r5, r6) = Part2a(Group2L, Group2R)
+(l7, l8, l9, r7, r8, r9) = Part3a(Group3L, Group3R)
+  
+(C1, C4, C7, C10, C13) = Key1(l1, r1, l4, r4, l7)
+(C2, C5, C8, C11, C14)  = Key2(l2, r2, l5, r5, l8)
+(C3, C6, C9, C12, C15) = Key3(l3, r3, l6, r6, l9)
+
+#rotate by one
+j = C1
+C1 = C15
+C15 = C1
+
+print("")
+print("ECB")
+print(str(C1) + " " + str(C2) + " " + str(C3) + " " + str(C4) + " " + str(C5) + " " + str(C6) + " " + str(C7) + " " + str(C8) + " " + str(C9) + " " + str(C10) + " " + str(C11) + " " + str(C12) + " " + str(C13) + " " + str(C14) + " " + str(C15))
+
+#Cipher Block Chaining
+
+print("")
+print("CBC")
+
+def key1(E1):
+  k1 = (7 * E1 + 1) % 26
+  return (k1)
+def key2(E2):
+  k2 = (7 * E2 + 1) % 26
+  return (k2)
+def key3(E3):
+  k3 = (7 * E3 + 1) % 26
+  return (k3)
+  
+l = str(l1) + str(r1) + str(l4) + str(r4) + str(l7) + str(r7)
+n = str(l2) + str(r2) + str(l5) + str(r5) + str(l8) + str(r8)
+q = str(l3) + str(r3) + str(l6) + str(r6) + str(l9) + str(r9)
+
+def CBC():
+  #initialization vector
+  p = "p"
+  i = "i"
+  e = "e"
+  f1 = l1 ^ ord(p)
+  f2 = l1 ^ ord(i)
+  f3 = l1 ^ ord(e)
+  g1 = key1(f1)
+  g2 = key2(f2)
+  g3 = key2(f3)
+  g = str(g1) + " " + str(g2) + " " + str(g3) + " "
+  #plaintext xor cipher
+  h1 = g1 ^ int(l1)
+  h2 = g2 ^ int(l2)
+  h3 = g2 ^ int(l3)
+  #send though fuction
+  g1 = key1(h1)
+  g2 = key1(h2)
+  g3 = key1(h3)
+  #new cipher
+  g += str(g1) + " " + str(g2) + " " + str(g3) + " "
+  #plaintext xor cipher
+  h1 = g1 ^ int(r1)
+  h2 = g2 ^ int(r2)
+  h3 = g2 ^ int(r3)
+  #send though fuction
+  g1 = key1(h1)
+  g2 = key1(h2)
+  g3 = key1(h3)
+  #new cipher
+  g += str(g1) + " " + str(g2) + " " + str(g3) + " "  
+  #plaintext xor cipher
+  h1 = g1 ^ int(l4)
+  h2 = g2 ^ int(l5)
+  h3 = g2 ^ int(l6)
+  #send though fuction
+  g1 = key1(h1)
+  g2 = key1(h2)
+  g3 = key1(h3)
+  #new cipher
+  g += str(g1) + " " + str(g2) + " " + str(g3) + " "
+  #plaintext xor cipher
+  h1 = g1 ^ int(r4)
+  h2 = g2 ^ int(r5)
+  h3 = g2 ^ int(r6)
+  #send though fuction
+  g1 = key1(h1)
+  g2 = key1(h2)
+  g3 = key1(h3)
+  #plaintext xor cipher
+  h1 = g1 ^ int(l7)
+  h2 = g2 ^ int(l8)
+  h3 = g2 ^ int(l9)
+  #send though fuction
+  g1 = key1(h1)
+  g2 = key1(h2)
+  g3 = key1(h3)
+  #new cipher
+  g += str(g1) + " " + str(g2) + " " + str(g3) + " "
+  #new cipher
+  g += str(g1) + " " + str(g2) + " " + str(g3) + " "
+  print(g)
+  #rotate by one
+  j = g1
+  g1 = g3
+  g3 = g1
+
+CBC()
+
+#Output Feedback
+
+print("")
+print("OPF")
+
+def OPF():
+  #initialization vector
+  p = "p"
+  i = "i"
+  e = "e"
+  f1 = key1(ord(p))
+  f2 = key2(ord(i))
+  f3 = key3(ord(e))
+  g1 = f1 ^ l1
+  g2 = f1 ^ l2
+  g3 = f1 ^ l3
+  g = str(g1) + " " + str(g2) + " " + str(g3) + " "
+  #function 
+  f1 = key1(f1)
+  f2 = key1(f2)
+  f3 = key1(f3)
+  g1 = f1 ^ r1
+  g2 = f1 ^ r2
+  g3 = f1 ^ r3
+  g += str(g1) + " " + str(g2) + " " + str(g3) + " "
+  f1 = key1(f1)
+  f2 = key1(f2)
+  f3 = key1(f3)
+  g1 = f1 ^ l4
+  g2 = f1 ^ l5
+  g3 = f1 ^ l6
+  g += str(g1) + " " + str(g2) + " " + str(g3) + " "
+  f1 = key1(f1)
+  f2 = key1(f2)
+  f3 = key1(f3)
+  g1 = f1 ^ r4
+  g2 = f1 ^ r5
+  g3 = f1 ^ r6
+  g += str(g1) + " " + str(g2) + " " + str(g3) + " "
+  f1 = key1(f1)
+  f2 = key1(f2)
+  f3 = key1(f3)
+  g1 = f1 ^ l7
+  g2 = f1 ^ l8
+  g3 = f1 ^ l9
+  g += str(g1) + " " + str(g2) + " " + str(g3) + " "
+  print(g)
+  #rotate by one
+  j = g1
+  g1 = g3
+  g3 = g1
+  
+OPF()
+  
+#Linear Feedback Registar (CH 5)
+  #implement the 16 but GaloisLFSR
+  #take the operation that affects bits 16, 14, 13, and 11 as binary addition
+  #the output after each interation is bit 1 (Xor with chr())
+
+print("")
+print("Linear Feedback Registar")
+#Create the firt input 
+b1 = 1
+b2 = 0
+b3 = 0 
+b4 = 0 
+b5 = 0
+b6 = 1
+b7 = 1
+b8 = 1
+b9 = 0
+b10 = 0
+b11= 1
+b12 = 1
+b13 = 0
+b14 = 1
+b15 = 0
+b16 = 1
+
+print("Key Stream")
+#print(str(b16) + " " + str(b15) + " " + str(b14) + " " + str(b13) + " " + str(b12) + " " + str(b11) + " " + str(b10) + " " +  str(b9) + " " + str(b8) + " " + str(b7) + " " + str(b6) + " " + str(b5) + " " + str(b4) + " " + str(b3) + " " + str(b2) + " " + str(b1))
+
+#Create the function
+def LFSR(b16, b15, b14, b13, b12, b11, b10, b9 , b8, b7, b6, b5, b4, b3, b2, b1):
+  #The function will run unless all the terms are zeros or 1s
+  values = [b16, b15, b14, b13, b12, b11, b10, b9, b8, b7, b6, b5, b4, b3, b2, b1]
+  output = str(b16) + " " + str(b15) + " " + str(b14) + " " + str(b13) + " " + str(b12) + " " + str(b11) + " " + str(b10) + " " +  str(b9) + " " + str(b8) + " " + str(b7) + " " + str(b6) + " " + str(b5) + " " + str(b4) + " " + str(b3) + " " + str(b2) + " " + str(b1)
+  #while not (b16==b15 and b16==b14 and b16==b13 and b16==b12 and b16==b11 and b16==b10 and b16==b9 and b16==b8 and b16==b7 and b16==b6 and b16==b5 and b16==b4 and b16==b3 and b16==b2 and b16==b1):
+  for i in range(0,12): 
+    #creating duplicate variabels
+    u15 = b15
+    u14 = b14
+    u12 = b12
+    #the variables b16, b14, b13, b11 are special
+    b16 = b1
+    b15 = b16
+    b14 = u15 ^ b1
+    b13 = u14 ^ b1
+    b12 = b13
+    b11 = u12 ^ b1
+    b10 = b11
+    b9 = b10
+    b8 = b9 
+    b7 = b8 
+    b6 = b7 
+    b5 = b6
+    b4 = b5
+    b3 = b4
+    b2 = b3
+    b1 = b2
+    output += " " + str(b16)
+    #print(str(b16) + " " + str(b15) + " " + str(b14) + " " + str(b13) + " " + str(b12) + " " + str(b11) + " " + str(b10) + " " +  str(b9) + " " + str(b8) + " " + str(b7) + " " + str(b6) + " " + str(b5) + " " + str(b4) + " " + str(b3) + " " + str(b2) + " " + str(b1))
+  return output
+    
+#Key Stream 
+output = LFSR(b16, b15, b14, b13, b12, b11, b10, b9 , b8, b7, b6, b5, b4, b3, b2, b1)
+print(output)
+output= remove(output)
+o1 = output[0]
+o2 = output[1]
+o3 = output[2]
+o4 = output[3]
+o5 = output[4]
+o6 = output[5]
+o7 = output[6]
+o8 = output[7]
+o9 = output[8]
+o10 = output[9]
+o11 = output[10]
+o12 = output[11]
+o13 = output[12]
+o14 = output[13]
+o15 = output[14]
+o16 = output[15]
+o17 = output[16]
+o18 = output[17]
+o19 = output[18]
+o20 = output[19]
+o21 = output[20]
+o22 = output[21]
+o23 = output[22]
+o24 = output[23]
+o25 = output[24]
+o26 = output[25]
+o27 = output[26]
+o28 = output[27]
+
+#Plain text
+Plain_text = "MATH"
+P1 = ord("M")
+P2 = ord("A")
+P3 = ord("T")
+P4 = ord("H")
+    
+#convet to binary
+p1 = bin(P1)
+b1 = p1[2]
+b2 = p1[3]
+b3 = p1[4]
+b4 = p1[5]
+b5 = p1[6]
+b6 = p1[7]
+b7 = p1[8]
+
+p2 = bin(P2)
+b8 = p2[2]
+b9 = p2[3]
+b10 = p2[4]
+b11 = p2[5]
+b12 = p2[6]
+b13 = p2[7]
+b14 = p2[8]
+
+p3 = bin(P3)
+b15 = p3[2]
+b16 = p3[3]
+b17 = p3[4]
+b18 = p3[5]
+b19 = p3[6]
+b20 = p3[7]
+b21 = p3[8]
+
+p4 = bin(P4)
+b22 = p4[2]
+b23 = p4[3]
+b24 = p4[4]
+b25 = p4[5]
+b26 = p4[6]
+b27 = p4[7]
+b28 = p4[8]
+
+print("Plain Text")
+print (str(b1) + " " + str(b2) + " " + str(b3) + " " + str(b4) + " " +  str(b5) + " " + str(b6) + " " + str(b7) + " " + str(b8) + " " + str(b9) + " " + str(b10) + " " + str(b11) + " " + str(b12) + " " + str(b13) + " " + str(b14) + " " + str(b15) + " " + str(b16) + " " + str(b17) + " " + str(b18) + " " + str(b19) + " " + str(b20) + " " + str(b21) + " " + str(b22) + " " + str(b23) + " " + str(b24) + " " + str(b25) + " " + str(b26) + " " + str(b27) + " " + str(b28))
+
+#Cipher Text
+print("Cipher Text")
+c1 = int(o1) ^ int(b1)
+c2 = int(o2) ^ int(b2)
+c3 = int(o3) ^ int(b3)
+c4 = int(o4) ^ int(b4)
+c5 = int(o5) ^ int(b5)
+c6 = int(o6) ^ int(b6)
+c7 = int(o7) ^ int(b7)
+c8 = int(o8) ^ int(b8)
+c9 = int(o9) ^ int(b9)
+c10 = int(o10) ^ int(b10)
+c11 = int(o11) ^ int(b11)
+c12 = int(o12) ^ int(b12)
+c13 = int(o13) ^ int(b13)
+c14 = int(o14) ^ int(b14)
+c15 = int(o15) ^ int(b15)
+c16 = int(o16) ^ int(b16)
+c17 = int(o17) ^ int(b17)
+c18 = int(o18) ^ int(b18)
+c19 = int(o19) ^ int(b19)
+c20 = int(o20) ^ int(b20)
+c21 = int(o21) ^ int(b21)
+c22 = int(o22) ^ int(b22)
+c23 = int(o23) ^ int(b23)
+c24 = int(o24) ^ int(b24)
+c25 = int(o25) ^ int(b25)
+c26 = int(o26) ^ int(b26)
+c27 = int(o27) ^ int(b27)
+c28 = int(o28) ^ int(b28)
+
+Cipher_Text = (str(c1) + " " + str(c2) + " " + str(c3) + " " + str(c4) + " " +  str(c5) + " " + str(c6) + " " + str(c7) + " " + str(c8) + " " + str(c9) + " " + str(c10) + " " + str(c11) + " " + str(c12) + " " + str(c13) + " " + str(c14) + " " + str(c15) + " " + str(c16) + " " + str(c17) + " " + str(c18) + " " + str(c19) + " " + str(c20) + " " + str(c21) + " " + str(c22) + " " + str(c23) + " " + str(c24) + " " + str(c25) + " " + str(c26) + " " + str(c27) + " " + str(c28))
+print Cipher_Text
+
+#Decimal Value
+Cipher = remove(Cipher_Text)
+
+M = ""
+A = ""
+T = ""
+H = ""
+for i in range (0, len(Cipher)):
+  if i <7:
+    M += Cipher[i];
+  if i>=7 and i<14:
+    A += Cipher[i];
+  if i>=14 and i<21:
+    T += Cipher[i];
+  if i>=21 and i<128:
+    H += Cipher[i];
+print(M, A, T, H)
+    
+M1 = M[-1]
+M2 = M[-2] 
+M3 = M[-3] 
+M4 = M[-4]
+M5 = M[-5] 
+M6 = M[-6]
+decimal_M = int(M1) + (int(M2) * 2) + (int(M3) * (4)) + (int(M4) * (8)) + (int(M5) * (16))
+
+A1 = A[-1]
+A2 = A[-2] 
+A3 = A[-3] 
+A4 = A[-4]
+A5 = A[-5] 
+A6 = A[-6]
+A7 = A[-7] 
+decimal_A = int(A1) + (int(A2) * 2) + (int(A3) * (4)) + (int(A4) * (8)) + (int(A5) * (16)) + (int(A6) * (32)) + (int(A7) * (64))
+
+T7 = T[-1]
+T6 = T[-2] 
+T5 = T[-3] 
+T4 = T[-4]
+T3 = T[-5] 
+T2 = T[-6]
+T1 = T[-7] 
+decimal_T = int(T1) + (int(T2) * 2) + (int(T3) * (4)) + (int(T4) * (8)) + (int(T5) * (16)) + (int(T6) * (32)) + (int(T7) * (64))
+
+H1 = H[-1]
+H2 = H[-2] 
+H3 = H[-3] 
+H4 = H[-4]
+H5 = H[-5] 
+H6 = H[-6]
+H7 = H[-7] 
+decimal_H = int(H1) + (int(H2) * 2) + (int(H3) * (4)) + (int(H4) * (8)) + (int(H5) * (16)) + (int(H6) * (32)) + (int(H7) * (64))
+
+print("Decimal Text")
+print(str(decimal_M) + " " + str(decimal_A) + " " + str(decimal_T) + " " +str(decimal_H))
+
+#Decryption 
+#decimal to binary 
+M = str(bin(decimal_M))
+A = str(bin(decimal_A))
+T = str(bin(decimal_T))
+H = str(bin(decimal_H))
+
+M1, M2 = 0, 0
+M3 = int(M[-1])
+M4 = int(M[-2]) 
+M5 = int(M[-3]) 
+M6 = int(M[-4])
+M7 = int(M[-5]) 
+
+A1 = int(A[-7])
+A2 = int(A[-6]) 
+A3 = int(A[-5]) 
+A4 = int(A[-4])
+A5 = int(A[-3]) 
+A6 = int(A[-2])
+A7 = int(A[-1])
+
+T1 = int(T[-1])
+T2 = int(T[-2])
+T3 = int(T[-3])
+T4 = int(T[-4])
+T5 = int(T[-5])
+T6 = int(T[-6])
+T7 = 0 
+
+H1, H2, H3, H4, H5 = 0, 0, 0, 0, 0
+H7 = int(H[-1])
+H6 = int(H[-2])
+
+o1 = int(o1)
+o2 = int(o2)
+o3 = int(o3)
+o4 = int(o4)
+o5 = int(o5)
+o6 = int(o6)
+o7 = int(o7)
+o8 = int(o8)
+o9 = int(o9)
+o10 = int(o10)
+o11 = int(o11)
+o12 = int(o12)
+o13 = int(o13)
+o14 = int(o14)
+o15 = int(o15)
+o16 = int(o16)
+o17 = int(o17)
+o18 = int(o18)
+o19 = int(o19)
+o20 = int(o20)
+o21 = int(o21)
+o22 = int(o22)
+o23 = int(o23)
+o24 = int(o24)
+o25 = int(o25)
+o26 = int(o26)
+o27 = int(o27)
+o28 = int(o28)
+
+if M1 == 1 and o1 == 0:
+  n1 = 1
+elif M1 == 1 and o1 == 1:
+  n1 = 0
+elif M1 == 0 and o1 == 1:
+  n1 = 1
+else:
+  n1 = 0
+if M2 == 1 and o2 == 0:
+  n2 = 1
+elif M2 == 1 and o2 == 1:
+  n2 = 0
+elif M2 == 0 and o2 == 1:
+  n2 = 1
+else: 
+  n2 = 0
+if M3 == 1 and o3 == 0:
+  n3 = 1
+elif M3 == 1 and o3 == 1:
+  n3 = 0
+elif M3 == 0 and o3 == 1:
+  n3 = 1
+else:
+  n3 = 0
+if M4 == 1 and o4 == 0:
+  n4 = 1
+elif M4 == 1 and o4 == 1:
+  n4 = 0
+elif M4 == 0 and o4 == 1:
+  n4 = 1
+else:
+  n4 = 0
+if M5 == 1 and o5 == 0:
+  n5 = 1
+elif M5 == 1 and o5 == 1:
+  n5 = 0
+elif M5 == 0 and o5 == 1:
+  n5 = 1
+else:
+  n5 = 0
+if M6 == 1 and o6 == 0:
+  n6 = 1
+elif M6 == 1 and o6 == 1:
+  n6 = 0
+elif M6 == 0 and o6 == 1:
+  n6 = 1
+else:
+  n6 = 0
+if M7 == 1 and o7 == 0:
+  n7 = 1
+elif M7 == 1 and o7 == 1:
+  n7 = 0
+elif M7 == 0 and o7 == 1:
+  n7 = 1
+else:
+  n7 = 0
+
+
+if A1 == 1 and o8 == 0:
+  n8 = 1
+elif A1 == 1 and o8 == 1:
+  n8 = 0
+elif A1 == 0 and o8 == 1:
+  n8 = 1
+else:
+  n8 = 0
+if A2 == 1 and o9 == 0:
+  n9 = 1
+elif A2 == 1 and o9 == 1:
+  n9 = 0
+elif A2 == 0 and o9 == 1:
+  n9 = 1
+else:
+  n9 = 0
+if A3 == 1 and o10 == 0:
+  n10 = 1
+elif A3 == 1 and o10 == 1:
+  n10 = 0
+elif A3 == 0 and o10 == 1:
+  n10 = 1
+else:
+  n10 = 0
+if A4 == 1 and o11 == 0:
+  n11 = 1
+elif A4 == 1 and o11 == 1:
+  n11 = 0
+elif A4 == 0 and o11 == 1:
+  n11 = 1
+else:
+  n11 = 0
+if A5 == 1 and o12 == 0:
+  n12 = 1
+elif A5 == 1 and o12 == 1:
+  n12 = 0
+elif A5 == 0 and o12 == 1:
+  n12 = 1
+else:
+  n12 = 0
+if A6 == 1 and o13 == 0:
+  n13 = 1
+elif A6 == 1 and o13 == 1:
+  n13 = 0
+elif A6 == 0 and o13 == 1:
+  n13 = 1
+else:
+  n13 = 0
+if A7 == 1 and o14 == 0:
+  n14 = 1
+elif A7 == 1 and o14 == 1:
+  n14 = 0
+elif A7 == 0 and o14 == 1:
+  n14 = 1
+else:
+  n14 = 0
+  
+if T1 == 1 and o15== 0:
+  n15 = 1
+elif T1 == 1 and o15 == 1:
+  n15 = 0
+elif T1 == 0 and o15 == 1:
+  n15 = 1
+else:
+  n15 = 0
+if T2 == 1 and o16== 0:
+  n15 = 1
+elif T2 == 1 and o16 == 1:
+  n16 = 0
+elif T2 == 0 and o16 == 1:
+  n16 = 1
+else:
+  n16 = 0
+if T3 == 1 and o17 == 0:
+  n17 = 1
+elif T3 == 1 and o17 == 1:
+  n1 = 0
+elif T3 == 0 and o17 == 1:
+  n17 = 1
+else:
+  n17 = 0
+if T4 == 1 and o18 == 0:
+  n18 = 1
+elif T4 == 1 and o18 == 1:
+  n2 = 0
+elif T4 == 0 and o18 == 1:
+  n18 = 1
+else:
+  n18 = 0
+if T5 == 1 and o19 == 0:
+  n19 = 1
+elif T5 == 1 and o19 == 1:
+  n19 = 0
+elif T5 == 0 and o19 == 1:
+  n19 = 1
+else:
+  n19 = 0
+if T6 == 1 and o20 == 0:
+  n20 = 1
+elif T6 == 1 and o20 == 1:
+  n20 = 0
+elif T6 == 0 and o20 == 1:
+  n20 = 1
+else:
+  n20 = 0
+if T7 == 1 and o21 == 0:
+  n21 = 1
+elif T7 == 1 and o21 == 1:
+  n21 = 0
+elif T7 == 0 and o21 == 1:
+  n21 = 1
+else:
+  n21 = 0
+
+if H1 == 1 and o22 == 0:
+  n22 = 1
+elif H1 == 1 and o22 == 1:
+  n22 = 0
+elif H1 == 0 and o22 == 1:
+  n22 = 1
+else:
+  n22 = 0
+if H2 == 1 and o23 == 0:
+  n23 = 1
+elif H2 == 1 and o23 == 1:
+  n23 = 0
+elif H2 == 0 and o23 == 1:
+  n23 = 1
+else: 
+  n23 = 0
+if H3 == 1 and o24 == 0:
+  n24 = 1
+elif H3 == 1 and o24 == 1:
+  n24 = 0
+elif H3 == 0 and o24 == 1:
+  n24 = 1
+else:
+  n24 = 0
+if H4 == 1 and o25 == 0:
+  n25 = 1
+elif H4 == 1 and o25 == 1:
+  n25 = 0
+elif H4 == 0 and o25 == 1:
+  n25 = 1
+else:
+  n25 = 0
+if H5 == 1 and o26 == 0:
+  n26 = 1
+elif H5 == 1 and o26 == 1:
+  n5 = 0
+elif H5 == 0 and o26 == 1:
+  n26 = 1
+else:
+  n26 = 0
+if H6 == 1 and o27 == 0:
+  n27 = 1
+elif H6 == 1 and o27 == 1:
+  n27 = 0
+elif H6 == 0 and o27 == 1:
+  n27 = 1
+else:
+  n27 = 0
+if H7 == 1 and o28 == 0:
+  n28 = 1
+elif H7 == 1 and o28 == 1:
+  n28 = 0
+elif H7 == 0 and o28 == 1:
+  n28 = 1
+else:
+  n28 = 0
+  
+Deciphered_Text = (str(n1) + " " + str(n2) + " " + str(n3) + " " + str(n4) + " " +  str(n5) + " " + str(n6) + " " + str(n7) + " " + str(n8) + " " + str(n9) + " " + str(n10) + " " + str(n11) + " " + str(n12) + " " + str(n13) + " " + str(n14) + " " + str(n15) + " " + str(n16) + " " + str(n17) + " " + str(n18) + " " + str(n19) + " " + str(n20) + " " + str(n21) + " " + str(n22) + " " + str(n23) + " " + str(n24) + " " + str(n25) + " " + str(n26) + " " + str(n27) + " " + str(n28))
+print("Decryption: " + Deciphered_Text)
+
+#LFSR(b16, b15, b14, b13, b12, b11, b10, b9 , b8, b7, b6, b5, b4, b3, b2, b1)
