@@ -1,0 +1,101 @@
+#Multiplication Cipher Encoding
+string1 = input("Please enter a string of text (UPPERCASE ONLY).")
+KEY1 = input("Please enter a odd number.")
+Cipher1 = ""
+numbers = ""
+string2 = ""
+for i in range(0, len(string1)):
+  letter = string1[i]
+  AlphToNumber1 = ord(letter) - 64
+  KEY1 = int(KEY1)
+  CiperText1 = (KEY1 * AlphToNumber1) % 26
+  Unicode1 = CiperText1 + 64
+  Char1 = chr(int(Unicode1))
+  Cipher1 += str(Char1)
+print("Your coded text key is " + str(Cipher1))
+
+#Multiplication Cipher Decoding
+for j in range (0, len(Cipher1)):
+  letter = Cipher1[j]
+  AlphToNumber2 = ord(letter) - 64
+  index = 0
+  #b = key1 * coded AlphToNumber
+  #P = decoded AlphToNumber
+  b = (AlphToNumber2 + index)
+  
+  if b % KEY1 == 0:
+    P = (b / KEY1) % 26
+  else:
+    while b % KEY1 != 0:
+      b += 26
+      P = b / KEY1 % 26
+  Unicode2 = P + 64
+  DecodedText1 = chr(int(Unicode2))
+  string2 += str(DecodedText1)
+print("The decoded text is " + str(string2))
+
+#Affine Cipher Encoding
+shift1 = input("Please enter a small number.")
+shift1 = int(shift1)
+Code2 = ""
+for i in range(0, len(string1)):
+  letter = string1[i]
+  P = ord(letter) - 64
+  KEY1 = int(KEY1)
+  C = (KEY1 * P + shift1) % 26
+  x = C + 64
+  convert = chr(int(x))
+  Code2 += str(convert)
+print("Your coded text is " + str(Code2))
+
+#Affine Cipher Decoding
+string3 = ""
+for j in range (0, len(Cipher1)):
+  letter = Cipher1[j]
+  x = ord(letter)
+  C = x - 64 
+  b = C
+  if b % KEY1 == 0:
+    P = (C / KEY1) % 26
+  else:
+    while b % KEY1 != 0:
+      b += 26
+      P = (b/KEY1) % 26
+  z = P + 64
+  convert = chr(int(z))
+  string3 += str(convert)
+print("The decoded text is " + str(string3))
+
+#Polygraphic Substitution Cipher Encoding
+Code3 = ""
+Code4 = ""
+letter1 = ""
+letter2 = ""
+k2 = input("Enter a odd number.")
+k3 = input("Enter a odd number.")
+k4 = input("Enter a odd number.")
+m2 = input("Enter a small number.")
+#block 1
+for i in range(0, len(string1), 2):
+  #Read every other letter
+  if ((i + 1) < len(string1)):
+    letter1 = string1[i]
+    P1 = ord(letter1) - 64
+    letter2 = string1[i + 1]
+    P2 = ord(letter2) - 64
+  else:
+    letter1 = string1[i]
+    P1 = ord(letter1) - 64
+    P2 = 0
+  k1 = int(KEY1)
+  C1 = ((int(k1) * int(P1)) + (int(k2) * int(P2)) + shift1) % 26
+  x1 = C1 + 64
+  convert1 = chr(int(x1))
+  #block 2
+  k2 = int(k2)
+  C2 = ((int(k3) * int(P1)) + (int(k4) * int(P2)) + int(m2)) % 26
+  x2 = int(C2) + 64
+  convert2 = chr(int(x2))
+  Code3 += str(convert1) + str(convert2) + " "
+  
+print("Your coded text with is " + str(Code3))
